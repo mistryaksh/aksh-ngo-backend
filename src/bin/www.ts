@@ -1,18 +1,11 @@
 import http from "http";
 import app from "../index";
 import { normalizePort } from "../utils";
-import io from "socket.io";
 
 const port = normalizePort(process.env.PORT || 8080);
 app.set("port", port);
 
 const server = http.createServer(app);
-
-const webSocket = new io.Server(server, {
-     cors: {
-          origin: "*",
-     },
-});
 
 const onError = (error: NodeJS.ErrnoException) => {
      if (error.syscall !== "listen") {
