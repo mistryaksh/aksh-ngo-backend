@@ -1,0 +1,20 @@
+USER SIDE
+2. Event category --api done
+     label, subTitle, priority
+3. Event --api done
+     image, label, subTitle, postedOn, description, bannerImage, categoryId, createdAt(from mongoose), updatedAt(from mongoose)
+4. Program --api done
+     label, subTitle, description, requiredDonation, receivedDonation, createdAt(from mongoose), updatedAt(from mongoose)
+5. Donation
+     categoryOne
+          a. fullName, email, mobile, 80G certificate checkBox, amountToDonate(fixed) --redirect to payment gateway page createdAt(from mongoose), updatedAt(from mongoose)
+               i. success - redirect with consumer info page with receipt
+               ii. failure - redirect with failed payment process reference number
+     categoryTwo
+          a. fullName, email, mobile, 80G certificate checkBox, amountToDonate --redirect to payment gateway createdAt(from mongoose), updatedAt(from mongoose)
+               i. success - redirect with consumer info page with receipt
+               ii. failure - redirect with failed payment process reference number
+6. Career profile
+     applicantName, mobile, email, resume(pdf file), applyingFor(dropdown), contact, createdAt(from mongoose), updatedAt(from mongoose)
+7. ContactForm --api done
+     message, fullName, email, subject(optional), createdAt(from mongoose), updatedAt(from mongoose)

@@ -1,0 +1,53 @@
+ADMIN SIDE
+1. Authentication (MAIN MODULE) priority 1 --api done
+     a. Register
+          email, firstName, lastName, mobile, password, createdAt(from mongoose), updatedAt(from mongoose)
+     b. Login
+          email, password
+2. Event category priority 2 --api done
+     label, subTitle
+3. Event (MAIN MODULE) priority 2 --api done
+     image, label, subTitle, postedOn, description, bannerImage, active,categoryId, createdAt(from mongoose), updatedAt(from mongoose)
+4. Program (MAIN MODULE) priority 4 --api done
+     label, subTitle, description, requiredDonation, receivedDonation,active, categoryId, createdAt(from mongoose), updatedAt(from mongoose)
+5. Donation / payment gateway prgram (MAIN MODULE) 3
+     apiKey --api done
+          key_id, key_secret, minimumDonation
+     categoryOne
+          a. fullName, email, mobile, 80G certificate checkBox, amountToDonate(fixed) --redirect to payment gateway page createdAt(from mongoose), updatedAt(from mongoose)
+               i. success - redirect with consumer info page with receipt
+               ii. failure - redirect with failed payment process reference number
+     categoryTwo
+          a. fullName, email, mobile, 80G certificate checkBox, amountToDonate --redirect to payment gateway createdAt(from mongoose), updatedAt(from mongoose)
+               i. success - redirect with consumer info page with receipt
+               ii. failure - redirect with failed payment process reference number
+     totalTransaction
+          a. transactionList
+               i. customerId
+                    - customerName
+                    - customerContact
+                         email, mobile
+                    - transactionRefId
+                    - transactionId
+                    - transactionStatus
+                    - transactionAction
+                         share (to customer email), archive
+                    - acknowledgementId (from razor pay given id)
+          b. paymentGateWayCost
+               filterable & sortable
+     refundableForm
+          fullName, email, mobile, acknowledgementIdOf80G, cancellationId, 80GCancellationId, amountToRefund
+6. 80G certificate
+    sharable to mailService
+          a. customerEmail, fullName, mobile
+          b list of shared mails
+7. About us --api done
+     ownerShip
+          directorName, background (description), image
+     contact
+          email, mobile, address, supportEmail, helplineNumbers (can be multiple)
+     whoAreWe (description)
+          description, vision, missing
+8. onDashboard --api done
+     totalDonationReceived, totalEvents, totalEventsCategory, totalPrograms, programedDonation
+9. simpleToDoList
