@@ -9,9 +9,6 @@ import config from "config";
 import cors, { CorsOptions } from "cors";
 import { errorHandler, notFoundMiddleware } from "./middleware";
 import { registerRoutesV1 } from "./api";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const corsOptions: CorsOptions = {
      credentials: true,
