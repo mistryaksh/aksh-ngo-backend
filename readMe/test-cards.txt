@@ -1,7 +1,0 @@
-card1=5267 3181 8797 5449
-cvv=random 3 digit
-exp=any future date
-
-card2=4111 1111 1111 1111
-cvv=random 3 digit
-exp=any future date

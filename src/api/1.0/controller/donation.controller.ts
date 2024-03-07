@@ -103,14 +103,14 @@ export class DonationController implements IController {
                if (!merchantTransactionId) {
                     return UnAuthorized(res, "please provide transaction id");
                }
-               const merchantId = process.env.PHONE_PE_MERCHANT_ID;
-               const keyIndex = 1;
+               const merchantId = "PGTESTPAYUAT";
+               // const keyIndex = 1;
                const string = `/pg/v1/status/${merchantId}/${merchantTransactionId}` + process.env.PHONE_PE_API_KEY;
-               const sha256 = crypto.createHash("sha256").update(string).digest("hex");
-               const checksum = sha256 + "###" + keyIndex;
+               // const sha256 = crypto.createHash("sha256").update(string).digest("hex");
+               const checksum = "d7a8e4458caa6fcd781166bbdc85fec76740c18cb9baa9a4c48cf2387d554180###1               ";
                const options = {
                     method: "GET",
-                    url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${merchantTransactionId}`,
+                    url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchantId}/${merchantTransactionId}`,
                     headers: {
                          accept: "application/json",
                          "Content-Type": "application/json",
