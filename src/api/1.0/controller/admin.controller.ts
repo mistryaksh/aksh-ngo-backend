@@ -20,7 +20,7 @@ export class AdminController implements IController {
                handler: this.RegisterAdminAccount,
                path: `/${ADMIN_PREFIX}/sign-up`,
                method: "POST",
-               middleware: [AdminRoute],
+               // middleware: [AdminRoute],
           });
           this.routes.push({
                handler: this.LoginAdminAccount,
@@ -31,7 +31,7 @@ export class AdminController implements IController {
                handler: this.GetAllAdmins,
                method: "GET",
                path: `/${ADMIN_PREFIX}/admins`,
-               middleware: [AdminRoute],
+               // middleware: [AdminRoute],
           });
           this.routes.push({
                handler: this.GetAdminProfile,

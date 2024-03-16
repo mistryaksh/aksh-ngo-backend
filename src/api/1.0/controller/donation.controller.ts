@@ -4,6 +4,7 @@ import {
      DonationInitialProps,
      IController,
      IControllerRoutes,
+     IDonationProps,
      PhonePeRedirectMode,
      PhonePeRequestedBody,
      SendMailProps,
@@ -35,6 +36,12 @@ export class DonationController implements IController {
           this.routes.push({ handler: this.GetDonationById, method: "GET", path: `/${DONATIONS_PREFIX}/:donationId` });
 
           this.routes.push({ handler: this.SendMailToDonator, method: "POST", path: `/${DONATIONS_PREFIX}/send-mail` });
+          this.routes.push({
+               handler: this.ManualEntryForDonation,
+               method: "POST",
+               path: "/donation/manual",
+               middleware: [AdminRoute],
+          });
      }
 
      public async PayDonation(req: Request, res: Response) {
@@ -130,6 +137,42 @@ export class DonationController implements IController {
                               },
                          }
                     );
+                    const sentMailResponse = MailService.sendMail(
+                         {
+                              from: "mistryaksh1998@gmail.com",
+                              to: donation.email,
+                              subject: `Gratitude for Your Compassionate Support`,
+                              html: `
+
+                              Dear  ${donation.custName},
+
+                              I hope this message finds you well and filled with the same warmth and kindness you've extended to us through your recent donation to [NGO Name]. Your generosity shines as a beacon of hope, lighting the path for those we serve, and we are truly grateful.
+
+                              Your donation will be instrumental in furthering our mission to [briefly describe the NGO's mission and activities, e.g., providing education to underprivileged children, offering healthcare services to remote communities, advocating for environmental conservation, etc.]. Your support allows us to continue our work with renewed vigor and dedication.
+
+                              It's humbling to see individuals like you who recognize the importance of our cause and step forward to make a difference. Your contribution not only provides financial support but also serves as a source of inspiration for our team and the communities we serve.
+
+                              Please accept our heartfelt thanks for your generosity and compassion. Your donation will have a lasting impact on the lives of many, empowering them to build brighter futures for themselves and their communities.
+
+                              We are honored to have you as part of our journey towards positive change. Together, we can create a world where everyone has the opportunity to thrive.
+
+                              With sincerest gratitude,
+
+                             YOU NGO SENDER NAME
+                              NGO AUTO BOT
+                              YOUR NGO NAME
+                              +91 8669026894
+                              `,
+                         },
+                         (error, response) => {
+                              if (error) {
+                                   console.log("error", error);
+                                   return UnAuthorized(res, error.message);
+                              } else {
+                                   return Ok(res, "MAIL_SENT");
+                              }
+                         }
+                    );
                     const updatedDonation = await Donation.findById({ _id: donation._id });
                     return Ok(res, updatedDonation);
                } else {
@@ -202,6 +245,27 @@ export class DonationController implements IController {
                          }
                     }
                );
+          } catch (err) {
+               return UnAuthorized(res, err);
+          }
+     }
+     public async ManualEntryForDonation(req: Request, res: Response) {
+          try {
+               const { amount, email, mobile, custName, paymentToken, referenceId }: IDonationProps = req.body;
+               if (!amount || !email || !mobile || !custName || !referenceId) {
+                    return UnAuthorized(res, "missing credentials");
+               }
+               const newDonation = await new Donation({
+                    amount,
+                    custName: custName,
+                    email,
+                    mobile,
+                    paymentToken: paymentToken,
+                    status: "COMPLETED",
+                    userId: randomUUID(),
+                    referenceId,
+               }).save();
+               return Ok(res, `${custName} is saved as donation!`);
           } catch (err) {
                return UnAuthorized(res, err);
           }
