@@ -46,61 +46,75 @@ export class DonationController implements IController {
 
      public async PayDonation(req: Request, res: Response) {
           try {
-               const merchantTransactionId = "MT7850590068188104";
-               const { amount, email, mobile, userName, userId }: DonationInitialProps = req.body;
-               if (!amount || !email || !mobile || !userName) {
-                    return UnAuthorized(res, "missing credentials");
-               }
-               const data: PhonePeRequestedBody = {
-                    merchantId: "PGTESTPAYUAT",
-                    merchantTransactionId: merchantTransactionId,
-                    merchantUserId: "MUID" + userId,
-                    name: userName,
-                    amount: amount * 100,
-                    // !Change call here
-                    redirectUrl: `https://aksh.ltd/donation/status/${merchantTransactionId}`,
-                    redirectMode: PhonePeRedirectMode.REDIRECT,
-                    mobileNumber: mobile,
-                    paymentInstrument: {
-                         type: "PAY_PAGE",
-                    },
-               };
-               const payload = JSON.stringify(data);
-               const payloadMain =
-                    "ewogICJtZXJjaGFudElkIjogIlBHVEVTVFBBWVVBVCIsCiAgIm1lcmNoYW50VHJhbnNhY3Rpb25JZCI6ICJNVDc4NTA1OTAwNjgxODgxMDQiLAogICJtZXJjaGFudFVzZXJJZCI6ICJNVUlEMTIzIiwKICAiYW1vdW50IjogMTAwMDAsCiAgInJlZGlyZWN0VXJsIjogImh0dHBzOi8vd2ViaG9vay5zaXRlL3JlZGlyZWN0LXVybCIsCiAgInJlZGlyZWN0TW9kZSI6ICJSRURJUkVDVCIsCiAgImNhbGxiYWNrVXJsIjogImh0dHBzOi8vd2ViaG9vay5zaXRlL2NhbGxiYWNrLXVybCIsCiAgIm1vYmlsZU51bWJlciI6ICI5OTk5OTk5OTk5IiwKICAicGF5bWVudEluc3RydW1lbnQiOiB7CiAgICAidHlwZSI6ICJQQVlfUEFHRSIKICB9Cn0=";
-               const keyIndex = 1;
-               const string = payloadMain + "/pg/v1/pay" + process.env.PHONE_PE_API_KEY;
-               const sha256 = crypto.createHash("sha256").update(string).digest("hex");
-               const checksum = "d7a8e4458caa6fcd781166bbdc85fec76740c18cb9baa9a4c48cf2387d554180###1               ";
-               const prod_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
+            const {
+              amount,
+              email,
+              mobile,
+              userName,
+              userId,
+            }: DonationInitialProps = req.body;
+            if (!amount || !email || !mobile || !userName) {
+              return UnAuthorized(res, "missing credentials");
+            }
+            const data: PhonePeRequestedBody = {
+              merchantId: "PGTESTPAYUAT",
+              merchantTransactionId: "MT7850590068188104",
+              merchantUserId: "MUID" + userId,
+              name: userName,
+              amount: amount * 100,
+              // !Change call here
+              redirectUrl: `https://ngo-demo.aksh.ltd/donation/status/MT7850590068188104`,
+              redirectMode: PhonePeRedirectMode.REDIRECT,
+              mobileNumber: mobile,
+              paymentInstrument: {
+                type: "PAY_PAGE",
+              },
+            };
+            const payload = JSON.stringify(data);
+            const payloadMain =
+              "ewogICJtZXJjaGFudElkIjogIlBHVEVTVFBBWVVBVCIsCiAgIm1lcmNoYW50VHJhbnNhY3Rpb25JZCI6ICJNVDc4NTA1OTAwNjgxODgxMDQiLAogICJtZXJjaGFudFVzZXJJZCI6ICJNVUlEMTIzIiwKICAiYW1vdW50IjogMTAwMDAsCiAgInJlZGlyZWN0VXJsIjogImh0dHBzOi8vd2ViaG9vay5zaXRlL3JlZGlyZWN0LXVybCIsCiAgInJlZGlyZWN0TW9kZSI6ICJSRURJUkVDVCIsCiAgImNhbGxiYWNrVXJsIjogImh0dHBzOi8vd2ViaG9vay5zaXRlL2NhbGxiYWNrLXVybCIsCiAgIm1vYmlsZU51bWJlciI6ICI5OTk5OTk5OTk5IiwKICAicGF5bWVudEluc3RydW1lbnQiOiB7CiAgICAidHlwZSI6ICJQQVlfUEFHRSIKICB9Cn0=";
+            const keyIndex = 1;
+            const string =
+              payloadMain + "/pg/v1/pay" + process.env.PHONE_PE_API_KEY;
+            const sha256 = crypto
+              .createHash("sha256")
+              .update(string)
+              .digest("hex");
+            const checksum =
+              "d7a8e4458caa6fcd781166bbdc85fec76740c18cb9baa9a4c48cf2387d554180###1";
+            const prod_URL =
+              "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
 
-               const newDonation = await new Donation({
-                    userId: userId,
-                    amount: amount,
-                    custName: userName,
-                    email: email,
-                    mobile: mobile,
-                    referenceId: merchantTransactionId,
-                    paymentToken: checksum,
-                    status: "INITIATED",
-               }).save();
-               const axiosResponse = await axios.post(
-                    prod_URL,
-                    {
-                         request: payloadMain,
-                    },
-                    {
-                         headers: {
-                              Accept: "application/json",
-                              "Content-Type": "application/json",
-                              "X-VERIFY": checksum,
-                         },
-                    }
-               );
-               return Ok(res, await axiosResponse.data.data.instrumentResponse.redirectInfo);
+            const newDonation = await new Donation({
+              userId: userId,
+              amount: amount,
+              custName: userName,
+              email: email,
+              mobile: mobile,
+              referenceId: "MT7850590068188104",
+              paymentToken: checksum,
+              status: "INITIATED",
+            }).save();
+            const axiosResponse = await axios.post(
+              prod_URL,
+              {
+                request: payloadMain,
+              },
+              {
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                  "X-VERIFY": checksum,
+                },
+              }
+            );
+            return Ok(
+              res,
+              await axiosResponse.data.data.instrumentResponse.redirectInfo
+            );
           } catch (err) {
-               console.log(err.response.data);
-               return UnAuthorized(res, err as string);
+            console.log(err.response.data);
+            return UnAuthorized(res, err as string);
           }
      }
 

@@ -13,7 +13,7 @@ import { registerRoutesV1 } from "./api";
 
 const corsOptions: CorsOptions = {
   credentials: true,
-  origin: "*",
+  origin: ["https://ngo-demo.aksh.ltd", "https://ngo-admin-demo.aksh.ltd/"],
 };
 
 dotenv.config();
