@@ -105,7 +105,7 @@ export class AdminController implements IController {
                     return UnAuthorized(res, "invalid credentials");
                }
 
-               const token = SignJwtToken(admin._id);
+               const token = SignJwtToken(admin?._id.toString());
                return Ok(res, {
                     token,
                     email: admin.contact.email,

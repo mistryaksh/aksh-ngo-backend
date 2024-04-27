@@ -1,0 +1,11 @@
+{
+  "DB_PATH": "mongodb+srv://admin:DR0dVz1UXdX8dROT@main-database.rmgcoa8.mongodb.net/?retryWrites=true&w=majority&appName=main-database",
+  "JWT_EXPIRE": "36000s",
+  "JWT_SECRET": "JSONWEBTOKENSECRET",
+  "MAIL_PASS": "gssjaockxlkhtauj",
+  "MAIL_USER": "mistryaksh1998@gmail.com",
+  "NODE_ENV": "production",
+  "PHONE_PE_API_KEY": "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399",
+  "PHONE_PE_MERCHANT_ID": "PGTESTPAYUAT",
+  "PHONE_PE_SERVER": "https://api-preprod.phonepe.com/apis/pg-sandbox"
+}
